@@ -25,7 +25,7 @@ class logger:
 		t.start()
 
 
-Logger = logger('data.csv', 1)
+Logger = logger('../data/rawData.csv', 1)
 
 while True:
 
