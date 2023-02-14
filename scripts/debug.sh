@@ -1,5 +1,5 @@
 while true
 do
-	tail -1 ../data/rawData.csv
 	sleep 1
+	tail -1 ../data/rawData.csv
 done
