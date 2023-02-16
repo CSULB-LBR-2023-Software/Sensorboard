@@ -34,5 +34,5 @@ while True:
 	
 	#read stdin for sensor data
 	for line in sys.stdin:
-		Logger.log(int(line))
+		Logger.log(line)
 		sys.stdin.flush()	
