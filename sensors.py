@@ -16,8 +16,12 @@ alt.temperature_oversampling = 2
 t1 = time.time()
 
 while True:
+    
+    #concatenate samples
     sample = imu.acceleration    
     a = time.time() - t1, sample[0], sample[1], sample[2], alt.altitude
+    
+    #stringize and write samples
     string = str(a) + "\n"
     stdout.write(string)
     stdout.flush()

@@ -18,13 +18,13 @@ class logger:
 	
 	#internal logger
 	def _save(self):
-		self.file = open(self.directory, 'a', newline='')
+		self.file = open(self.directory, 'a',newline='')
 		dataWriter = csv.writer(self.file)
 		dataWriter.writerow(self.arr)
 		self.arr.clear()
 		self.file.close()
 		
-		t = Timer(self.time, self._begin)
+		t = Timer(self.time, self._save)
 		t.start()
 
 #create logger every 5 second, with csv in data directory
