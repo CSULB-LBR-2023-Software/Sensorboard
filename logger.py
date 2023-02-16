@@ -10,14 +10,14 @@ class logger:
 		self.file = None
 		self.arr = []
 		self.time = time
-		self._begin()
+		self._save()
 	
 	#append array
 	def log(self, line):
 		self.arr.append(line)
 	
 	#internal logger
-	def _begin(self):
+	def _save(self):
 		self.file = open(self.directory, 'a', newline='')
 		dataWriter = csv.writer(self.file)
 		dataWriter.writerow(self.arr)
@@ -27,8 +27,8 @@ class logger:
 		t = Timer(self.time, self._begin)
 		t.start()
 
-#create logger every 1 second, with csv in data directory
-Logger = logger('../data/rawData.csv', 1)
+#create logger every 5 second, with csv in data directory
+Logger = logger('../data/rawData.csv', 5)
 
 while True:
 	
