@@ -1,6 +1,7 @@
 import sys
 import csv
 import random
+import numpy as np
 from time import sleep
 import RPi.GPIO as GPIO
 from threading import Timer, Lock
@@ -48,7 +49,7 @@ class logger:
             
             #print sensors data
             if self.debug:
-                print(line[0])
+                print(line)
 
     #save CSV
     def save(self):
@@ -58,9 +59,9 @@ class logger:
         #write buffer to CSV        
         try:
             self.arrLock.acquire()
-
-            for i in self.arr:
-                dataWriter.writerow(i)
+            
+            dataWriter.writerow(self.arr)
+            
             self.arr.clear()
         
         #close buffer, blink LED
@@ -83,5 +84,5 @@ while True:
 
     #read stdin for sensor data
     for line in sys.stdin:
-        Logger.log(line.split())
+        Logger.log(line.replace(",","")
         sys.stdin.flush()
