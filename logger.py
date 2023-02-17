@@ -1,7 +1,7 @@
 import sys
 import csv
 import random
-from threading import Timer
+from threading import Timer, Lock
 
 class logger:
     #start csv thread every time secnds 
@@ -9,26 +9,41 @@ class logger:
         self.directory = directory
         self.file = None
         self.arr = []
+        self.arrLock = Lock()
         self.time = time
         self._save()
 
     #append array
     def log(self, line):
-        self.arr.append(line)
+        try:
+            self.arrLock.acquire()
+  
+            #print("Log has lock")
+            self.arr.append(line)
+
+        finally:
+            self.arrLock.release()
 
     #internal logger
     def _save(self):
         self.file = open(self.directory,'a',newline='')
         dataWriter = csv.writer(self.file)
-        dataWriter.writerow(self.arr)
-        self.arr.clear()
-        self.file.close()
+            
+        try:
+            self.arrLock.acquire()
+            #print("Save has lock")
+            dataWriter.writerow(self.arr)
+            self.arr.clear()
+        
+        finally:
+            self.arrLock.release()
+            self.file.close()
 
-        t = Timer(self.time, self._save)
-        t.start()
+            t = Timer(self.time, self._save)
+            t.start()
 
-        #create logger every 1 second, with csv in data directory
-        Logger = logger('../data/rawData.csv', 1)
+#create logger every 1 second, with csv in data directory
+Logger = logger('../data/rawData.csv', 1)
 
 while True:
 
