@@ -41,24 +41,26 @@ class logger:
         #append line       
         try:
             self.arrLock.acquire()
-            self.arr.append(line) 
+            self.arr.append(line)
 
         finally:
             self.arrLock.release()
             
             #print sensors data
             if self.debug:
-                print(line)
+                print(line[0])
 
     #save CSV
     def save(self):
-        self.file = open(self.directory,'a',newline='')
+        self.file = open(self.directory,'a')
         dataWriter = csv.writer(self.file)
         
         #write buffer to CSV        
         try:
             self.arrLock.acquire()
-            dataWriter.writerow(self.arr)
+
+            for i in self.arr:
+                dataWriter.writerow(i)
             self.arr.clear()
         
         #close buffer, blink LED
@@ -81,5 +83,5 @@ while True:
 
     #read stdin for sensor data
     for line in sys.stdin:
-        Logger.log(line)
+        Logger.log(line.split())
         sys.stdin.flush()

@@ -26,7 +26,7 @@ while True:
     data = time.time() - t1, imu_sample[0], imu_sample[1], imu_sample[2], altitude_sample
     
     #stringize and write samples
-    string = str(data) + "\n"
+    string = str(data)[1:-1] + "\n"
     stdout.write(string)
     stdout.flush()
 
