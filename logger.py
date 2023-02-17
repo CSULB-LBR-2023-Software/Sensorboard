@@ -1,6 +1,8 @@
 import sys
 import csv
 import random
+from time import sleep
+import RPi.GPIO as GPIO
 from threading import Timer, Lock
 
 class logger:
@@ -10,10 +12,23 @@ class logger:
         self.directory = directory
         self.file = None
         self.time = float(time)
+        
         self.arr = []
         self.arrLock = Lock()
-        self._save()
-
+        
+        self.LED_State = True
+        self.LED_PIN = 7
+        GPIO.cleanup()
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.LED_PIN, GPIO.OUT, initial = GPIO.HIGH)
+        
+        self._save()   
+ 
+    #blink indicator LED
+    def blink(self):
+        GPIO.output(self.LED_PIN, self.LED_State)
+        self.LED_State = not(self.LED_State)
+    
     #append array
     def log(self, line):
         
@@ -45,6 +60,8 @@ class logger:
 
             t = Timer(self.time, self._save)
             t.start()
+            
+            self.blink()
 
 #define logger parameters
 if sys.argv[1] == "-d":
@@ -57,4 +74,4 @@ while True:
     #read stdin for sensor data
     for line in sys.stdin:
         Logger.log(line)
-        sys.stdin.flush()	
+        sys.stdin.flush()
