@@ -74,15 +74,12 @@ class logger:
             
             self.toggleLED()
 
-#define logger parameters
-if sys.argv[1] == "-d":
-    print("Debug enabled")
-
-Logger = logger(sys.argv[1], sys.argv[2], sys.argv[3])
+args = sys.argv[1:]
+Logger = logger(*args)
 
 while True:
 
     #read stdin for sensor data
     for line in sys.stdin:
-        Logger.log(line.replace(",","")
+        Logger.log(line.replace(",",""))
         sys.stdin.flush()
