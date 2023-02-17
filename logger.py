@@ -25,7 +25,8 @@ class logger:
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.LED_PIN, GPIO.OUT, initial = GPIO.HIGH)
-      
+        
+        #begin CSV file saver      
         self.save() 
  
     #blink indicator LED
@@ -44,7 +45,7 @@ class logger:
         finally:
             self.arrLock.release()
             
-            #printg
+            #print sensors data
             if self.debug:
                 print(line)
 
