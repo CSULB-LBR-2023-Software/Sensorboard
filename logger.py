@@ -25,7 +25,7 @@ class logger:
         self._save()   
  
     #blink indicator LED
-    def blink(self):
+    def toggleLED(self):
         GPIO.output(self.LED_PIN, self.LED_State)
         self.LED_State = not(self.LED_State)
     
@@ -48,12 +48,14 @@ class logger:
     def _save(self):
         self.file = open(self.directory,'a',newline='')
         dataWriter = csv.writer(self.file)
-         
+        
+        #write buffer to CSV        
         try:
             self.arrLock.acquire()
             dataWriter.writerow(self.arr)
             self.arr.clear()
         
+        #close buffer, blink LED
         finally:
             self.arrLock.release()
             self.file.close()
@@ -61,7 +63,7 @@ class logger:
             t = Timer(self.time, self._save)
             t.start()
             
-            self.blink()
+            self.toggleLED()
 
 #define logger parameters
 if sys.argv[1] == "-d":
