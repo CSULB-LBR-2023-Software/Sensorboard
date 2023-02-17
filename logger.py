@@ -9,24 +9,25 @@ class logger:
         self.debug = True if debug == "-d" else False
         self.directory = directory
         self.file = None
+        self.time = float(time)
         self.arr = []
         self.arrLock = Lock()
-        self.time = float(time)
         self._save()
 
     #append array
     def log(self, line):
         
+        #append line       
         try:
             self.arrLock.acquire()
-            
-            if self.debug:
-                print(line)
-
-            self.arr.append(line)
+            self.arr.append(line) 
 
         finally:
             self.arrLock.release()
+            
+            #printg
+            if self.debug:
+                print(line)
 
     #save CSV
     def _save(self):
