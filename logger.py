@@ -3,17 +3,15 @@ import csv
 import random
 from threading import Timer, Lock
 
-if sys.argv[1] == "-d":
-    print("Debug enabled")
-
 class logger:
     #start csv thread every time secnds 
-    def __init__(self, directory, time):
+    def __init__(self, debug, directory, time):
+        self.debug = True if debug == "-d" else False
         self.directory = directory
         self.file = None
         self.arr = []
         self.arrLock = Lock()
-        self.time = time
+        self.time = float(time)
         self._save()
 
     #append array
@@ -21,6 +19,10 @@ class logger:
         
         try:
             self.arrLock.acquire()
+            
+            if self.debug:
+                print(line)
+
             self.arr.append(line)
 
         finally:
@@ -43,8 +45,11 @@ class logger:
             t = Timer(self.time, self._save)
             t.start()
 
-#create logger every 1 second, with csv in data directory
-Logger = logger('../data/rawData.csv', 1)
+#define logger parameters
+if sys.argv[1] == "-d":
+    print("Debug enabled")
+
+Logger = logger(sys.argv[1], sys.argv[2], sys.argv[3])
 
 while True:
 
