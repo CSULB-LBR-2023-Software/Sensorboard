@@ -3,6 +3,9 @@ import csv
 import random
 from threading import Timer, Lock
 
+if sys.argv[1] == "-d":
+    print("Debug enabled")
+
 class logger:
     #start csv thread every time secnds 
     def __init__(self, directory, time):
@@ -15,23 +18,21 @@ class logger:
 
     #append array
     def log(self, line):
+        
         try:
             self.arrLock.acquire()
-  
-            #print("Log has lock")
             self.arr.append(line)
 
         finally:
             self.arrLock.release()
 
-    #internal logger
+    #save CSV
     def _save(self):
         self.file = open(self.directory,'a',newline='')
         dataWriter = csv.writer(self.file)
-            
+         
         try:
             self.arrLock.acquire()
-            #print("Save has lock")
             dataWriter.writerow(self.arr)
             self.arr.clear()
         
