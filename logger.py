@@ -22,6 +22,7 @@ class logger:
         #LED setup
         self.LED_State = True
         self.LED_PIN = 7
+        GPIO.setwarnings(False)
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.LED_PIN, GPIO.OUT, initial = GPIO.HIGH)
