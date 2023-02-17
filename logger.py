@@ -8,21 +8,25 @@ from threading import Timer, Lock
 class logger:
     #start csv thread every time secnds 
     def __init__(self, debug, directory, time):
+        
+        #set configuration flags
         self.debug = True if debug == "-d" else False
         self.directory = directory
         self.file = None
         self.time = float(time)
         
+        #mutex lock
         self.arr = []
         self.arrLock = Lock()
         
+        #LED setup
         self.LED_State = True
         self.LED_PIN = 7
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.LED_PIN, GPIO.OUT, initial = GPIO.HIGH)
-        
-        self._save()   
+      
+        self.save() 
  
     #blink indicator LED
     def toggleLED(self):
@@ -45,7 +49,7 @@ class logger:
                 print(line)
 
     #save CSV
-    def _save(self):
+    def save(self):
         self.file = open(self.directory,'a',newline='')
         dataWriter = csv.writer(self.file)
         
@@ -60,7 +64,7 @@ class logger:
             self.arrLock.release()
             self.file.close()
 
-            t = Timer(self.time, self._save)
+            t = Timer(self.time, self.save)
             t.start()
             
             self.toggleLED()
