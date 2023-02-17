@@ -21,11 +21,12 @@ t1 = time.time()
 while True:
     
     #concatenate samples
-    sample = imu.acceleration    
-    a = time.time() - t1, sample[0], sample[1], sample[2], alt.altitude
+    altitude_sample = alt.altitude
+    imu_sample = imu.acceleration    
+    data = time.time() - t1, imu_sample[0], imu_sample[1], imu_sample[2], altitude_sample
     
     #stringize and write samples
-    string = str(a) + "\n"
+    string = str(data) + "\n"
     stdout.write(string)
     stdout.flush()
 
