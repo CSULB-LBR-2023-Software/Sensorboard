@@ -9,8 +9,11 @@ from sys import stdout
 i2c = board.I2C()
 imu = adafruit_bno055.BNO055_I2C(i2c)
 alt = adafruit_bmp3xx.BMP3XX_I2C(i2c)
+
+#sensor configurations
 alt.pressure_oversampling = 8
 alt.temperature_oversampling = 2
+alt.sea_level_pressure = 1024.2
 
 #start time
 t1 = time.time()
